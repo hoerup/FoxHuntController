@@ -7,37 +7,38 @@
  * Pin12 is reserved for controlling gsm shield powerup/down
  * 
  * Pin2 - readyLED - used to indicate that GSM is ready
- * Pin8 - radiocontrol
+ * Pin8 - radiocontrol - used to send morse signal to radio
+ * 
+ * 
+ * Make sure you have installed DFRobot_SIM808 from https://github.com/DFRobot/DFRobot_SIM808/
  */
 
 #include <DFRobot_sim808.h>
-
 #include "morse.h"
+#include "smshandler.h"
 
-DFRobot_SIM808 sim808(&Serial);
+#include "config.h"
 
-#define GSM_READY_PIN 2
-#define GSM_SHIELD_POWERCTRL 12
+
+
+Morse morse(MORSE_PIN);
+
+SmsHandler smsHandler;
+SoftwareSerial debugSerial(SOFTRX,SOFTTX);
+
 
 void setup() {
   Serial.begin(9600);
+  debugSerial.begin(9600);
 
-  pinMode(GSM_READY_PIN, OUTPUT);
-  pinMode(GSM_SHIELD_POWERCTRL, OUTPUT);
+  debugSerial.println("FoxHunt booting");
 
-  sim808.powerUpDown(GSM_SHIELD_POWERCTRL);
- 
- // Initialize sim808 module 
-  while(!sim808.init()) {
-      delay(1000);
-      Serial.print("Sim808 init error\r\n");
-  }  
 
-  digitalWrite(GSM_READY_PIN, HIGH);
-
-  
+  smsHandler.init();
+    
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
+  smsHandler.handleSms();
+ 
 }
