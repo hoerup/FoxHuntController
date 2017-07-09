@@ -9,6 +9,7 @@ class Morse {
     void setDitLength(int len);
     void setMessage(const char* msg);
 
+    void sendLongSignal(short ms);
 
     void sendMorse();
     
@@ -19,8 +20,13 @@ class Morse {
     void sendDitAndDah( const char* ditdah);    
     void sendChar(char ch);
   
-    int outpin;
-    int ditlength;    
+    short outpin;
+    
+    short ditlength;    
+    short charInterval;
+    short wordInterval;
+    
+    
     const char* message;
   
 };

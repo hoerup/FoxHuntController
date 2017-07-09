@@ -66,6 +66,9 @@ void Morse::setDitLength(int len) {
     len = 2000;
       
   ditlength = len;
+
+  charInterval = ditlength * 5;
+  wordInterval = ditlength * 7;
 }
 
 void Morse::setMessage(const char* msg) {
@@ -78,11 +81,19 @@ void Morse::sendMorse() {
   
   for (int i=0; i<len; i++)  {
     sendChar( message[i] );
-    delay( ditlength * 3); //3 dit's delay after each char
+    delay( charInterval ); 
   }
-  delay( ditlength * 8);  //long delay after transmission
+  
+  delay( wordInterval );  //long delay after transmission
 }
 
+
+void Morse::sendLongSignal(short ms) {
+  digitalWrite(outpin, HIGH);
+  delay(ms);  
+  digitalWrite(outpin, LOW);
+  delay(wordInterval);  
+}
 
 void Morse::sendDit() {
   digitalWrite(outpin, HIGH);

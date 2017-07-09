@@ -12,6 +12,7 @@ class SmsHandler {
   private:
 
     void parseSms();
+    void sendStatusReply();
     void debugPrintGps();
 
     unsigned long millisLastRead;

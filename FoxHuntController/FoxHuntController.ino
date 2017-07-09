@@ -13,7 +13,7 @@
  * Make sure you have installed DFRobot_SIM808 from https://github.com/DFRobot/DFRobot_SIM808/
  */
 
-#include <DFRobot_sim808.h>
+
 #include "morse.h"
 #include "smshandler.h"
 
@@ -21,11 +21,15 @@
 
 
 
-Morse morse(MORSE_PIN);
+Morse morse(PIN_MORSE);
 
 SmsHandler smsHandler;
-SoftwareSerial debugSerial(SOFTRX,SOFTTX);
 
+
+SoftwareSerial debugSerial(PIN_SOFTRX, PIN_SOFTTX); //defined "extern" in config.h
+FoxConfig globalConfiguration; //defined "extern" in config.h
+
+char senderId[] = { 'A', 'U', 'V', 'H', '5', 'N', 'D', 'B' };
 
 void setup() {
   Serial.begin(9600);
@@ -33,12 +37,48 @@ void setup() {
 
   debugSerial.println("FoxHunt booting");
 
+  pinMode(PIN_FOXNO_0, INPUT);
+  pinMode(PIN_FOXNO_1, INPUT);
+  pinMode(PIN_FOXNO_2, INPUT);
+
+  pinMode(PIN_HW_ONOFF, INPUT);
+
+
 
   smsHandler.init();
     
 }
 
 void loop() {
+
+  // Vi kan godt aflæse ditital inputs hver loop cycle - det  tager ikke mange ms.
+  globalConfiguration.foxNumber = ( digitalRead(PIN_FOXNO_2) << 2) &  ( digitalRead(PIN_FOXNO_1) << 1) &  digitalRead(PIN_FOXNO_0);
+  globalConfiguration.onHw = digitalRead(PIN_HW_ONOFF);
+  
   smsHandler.handleSms();
- 
+  morseController();
 }
+
+
+//ToDo: Denne funtion skal holde øje med tid + afsendelses interval
+//      og såfremt det er tid til afsendelse skal den finde den rigtige besked og af sende den 
+void morseController() {
+  
+  if (globalConfiguration.onHw == 0 || globalConfiguration.onSms == 0)  { //this fox has been shut off by switch or sms
+    return;
+  }
+  
+
+  //early exit hvis det ikke er tid til udsendelse
+
+  char call[20];
+  sprintf(call, "OZ7FOX%c", senderId[ globalConfiguration.foxNumber ]);
+  morse.setMessage(call);
+  morse.sendMorse();
+
+  morse.sendLongSignal(10000);
+  
+  
+  
+}
+

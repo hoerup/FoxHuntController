@@ -21,12 +21,12 @@ SmsHandler::SmsHandler()
 }
 
 void SmsHandler::init() {
-  pinMode(GSM_READY_PIN, OUTPUT);
-  digitalWrite(GSM_READY_PIN, LOW);
+  pinMode(PIN_GSM_READY, OUTPUT);
+  digitalWrite(PIN_GSM_READY, LOW);
 
   
   if (! sim808.checkPowerUp() ) {
-    sim808.powerUpDown(GSM_SHIELD_POWERCTRL);
+    sim808.powerUpDown(PIN_GSM_SHIELD_POWERCTRL);
   }
 
  // Initialize sim808 module 
@@ -48,7 +48,7 @@ void SmsHandler::init() {
     sim808.deleteSMS(i);  
   }*/
 
-  digitalWrite(GSM_READY_PIN, HIGH);
+  digitalWrite(PIN_GSM_READY, HIGH);
 
 }
 
@@ -93,8 +93,10 @@ void SmsHandler::parseSms() {
     debugSerial.print("Recieved Message: ");
     debugSerial.println(message);      
 
+    
 
-    sim808.sendSMS(phone, "OK");
+
+    sim808.sendSMS(phone, "Unknown Command");
 }
 
 

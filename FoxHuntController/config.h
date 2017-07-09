@@ -3,14 +3,35 @@
 
 #include <SoftwareSerial.h>
 
-#define SOFTRX 2
-#define SOFTTX 3
-#define GSM_READY_PIN 4
-#define MORSE_PIN 5
 
-#define GSM_SHIELD_POWERCTRL 12 // This one cant be moved
+#define PIN_SOFTRX 2 // rx fra debug rs232 shield 
+#define PIN_SOFTTX 3 // tx til debug rs232 shield 
+#define PIN_GSM_READY 4 // LED out til at indikere at vi har gsm signal
+#define PIN_MORSE 5 // 
 
 
+//3 hardware pins to make a 3bit digital input defining fox number
+#define PIN_FOXNO_0 6 // least significant bit
+#define PIN_FOXNO_1 7
+#define PIN_FOXNO_2 8 // most significant bit
+
+#define PIN_HW_ONOFF 9
+
+
+#define PIN_GSM_SHIELD_POWERCTRL 12 // This one cant be moved
+
+
+struct FoxConfig {
+  short onSms : 1;
+  short onHw : 1;
+  
+  short foxNumber : 3;
+  
+};
+
+
+
+extern FoxConfig globalConfiguration;
 extern SoftwareSerial debugSerial;
 
 #endif // __CONFIG_H__
