@@ -4,7 +4,7 @@
 #include <DFRobot_sim808.h>
 
 
-#define MESSAGE_LENGTH 160
+#define MESSAGE_LENGTH 80 // ja SMS kan teknisk set være længere - men kommando SMS'erne er væsentlig kortere
 
 char message[MESSAGE_LENGTH];
 
@@ -32,16 +32,16 @@ void SmsHandler::init() {
  // Initialize sim808 module 
   while(!sim808.init()) {
       delay(1000);
-      debugSerial.print("Sim808 init error\r\n");
+      debugSerial.print( F("Sim808 init error\r\n") );
   }  
-  debugSerial.println("Sim808 Ready");
+  debugSerial.println( F("Sim808 Ready") );
 
 
   //************* Turn on the GPS power************
   if( sim808.attachGPS())
-      debugSerial.println("Open the GPS power success");
+      debugSerial.println( F("Open the GPS power success") );
   else 
-      debugSerial.println("Open the GPS power failure");
+      debugSerial.println( F("Open the GPS power failure") );
 
   /*debugSerial.println("Deleting old sms");
   for (int i=1; i<=9; i++) {
@@ -77,7 +77,7 @@ void SmsHandler::handleSms() {
 
   //*********** At least, there is one UNREAD SMS ****-*******
   if (messageIndex > 0) { 
-    debugSerial.print("messageIndex: ");
+    debugSerial.print( F("messageIndex: ") );
     debugSerial.println(messageIndex);    
     
     sim808.readSMS(messageIndex, message, MESSAGE_LENGTH, phone, datetime);
@@ -95,19 +95,64 @@ void SmsHandler::handleSms() {
 
 
 void SmsHandler::parseSms() {
-    debugSerial.print("From number: ");
+    debugSerial.print( F("From number: ") );
     debugSerial.println(phone);  
-    debugSerial.print("Datetime: ");
+    debugSerial.print( F("Datetime: ") );
     debugSerial.println(datetime);        
-    debugSerial.print("Recieved Message: ");
+    debugSerial.print( F("Recieved Message: ") );
     debugSerial.println(message);      
+
+    char tmpstr[5];
+    
 
     for (int i=0; i<strlen(message); i++) { //in-place str-to-upper
       message[i] = toupper(message[i]); 
     }
+
     
     if (strncmp("STATUS", message, 6) == 0) {
       sendStatusReply();
+      return;
+    }
+
+    if (strcmp("ON", message) == 0) {
+      globalConfiguration.onSms = 1;
+      sim808.sendSMS(phone, "Ok");  
+      return;
+    }
+
+    if (strcmp("OFF", message) == 0) {
+      globalConfiguration.onSms = 0;
+      sim808.sendSMS(phone, "Ok");  
+      return;
+    }
+
+    if (strncmp("A:", message, 2) == 0) {
+      if (strlen(message) != 11) {
+        sim808.sendSMS(phone, "Error, inval length");    
+        return ;
+      }
+      strncpy(tmpstr, message+2, 4);
+      tmpstr[4] = 0;
+      unsigned short tmpStart = atoi(tmpstr);
+      if (tmpStart == 0) {
+        sim808.sendSMS(phone, "Error parsing start");    
+        return ;        
+      }
+
+      strncpy(tmpstr, message+7, 4);
+      tmpstr[4] = 0;
+      unsigned short tmpStop = atoi(tmpstr);
+      if (tmpStop == 0) {
+        sim808.sendSMS(phone, "Error parsing stop");    
+        return ;        
+      }
+
+      globalConfiguration.startTime = tmpStart;
+      globalConfiguration.stopTime = tmpStop;
+      
+
+      sim808.sendSMS(phone, "Ok");  
       return;
     }
 
@@ -123,10 +168,12 @@ void SmsHandler::sendStatusReply() {
   dtostrf(sim808.GPSdata.lat, 2, 6, lat); //since sprintf doesn't support %f
   dtostrf(sim808.GPSdata.lon, 2, 6, lon);
 
-  sprintf(reply, "Fox:%i Ho:%i So:%i T:%02d:%02d:%02d(utc) Loc:%s,%s", 
+  sprintf(reply, "Fox:%i Ho:%i So:%i T:%02d:%02d:%02d(utc) Loc:%s,%s Int:%04d-%04d", 
       globalConfiguration.foxNumber,globalConfiguration.onHw, globalConfiguration.onSms, 
       sim808.GPSdata.hour, sim808.GPSdata.minute, sim808.GPSdata.second,
-      lat,lon
+      lat,lon,
+      globalConfiguration.startTime, globalConfiguration.stopTime
+      
       );
       
   sim808.sendSMS(phone, reply);      
@@ -135,25 +182,25 @@ void SmsHandler::sendStatusReply() {
 
 void SmsHandler::debugPrintGps() {
   debugSerial.print(sim808.GPSdata.year);
-  debugSerial.print("/");
+  debugSerial.print( F("/") );
   debugSerial.print(sim808.GPSdata.month);
-  debugSerial.print("/");
+  debugSerial.print( F("/") );
   debugSerial.print(sim808.GPSdata.day);
-  debugSerial.print(" ");
+  debugSerial.print( F(" ") );
   debugSerial.print(sim808.GPSdata.hour);
-  debugSerial.print(":");
+  debugSerial.print( F(":") );
   debugSerial.print(sim808.GPSdata.minute);
-  debugSerial.print(":");
+  debugSerial.print( F(":") );
   debugSerial.print(sim808.GPSdata.second);
-  debugSerial.print(":");
+  debugSerial.print( F(":") );
   debugSerial.println(sim808.GPSdata.centisecond);
-  debugSerial.print("latitude :");
+  debugSerial.print( F("latitude :") );
   debugSerial.println(sim808.GPSdata.lat, 8);
-  debugSerial.print("longitude :");
+  debugSerial.print( F("longitude :") );
   debugSerial.println(sim808.GPSdata.lon, 8);
-  debugSerial.print("speed_kph :");
+  debugSerial.print( F("speed_kph :") );
   debugSerial.println(sim808.GPSdata.speed_kph);
-  debugSerial.print("heading :");
+  debugSerial.print( F("heading :") );
   debugSerial.println(sim808.GPSdata.heading);
   debugSerial.println();
 }

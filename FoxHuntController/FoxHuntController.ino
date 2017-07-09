@@ -29,14 +29,14 @@ SmsHandler smsHandler;
 SoftwareSerial debugSerial(PIN_SOFTRX, PIN_SOFTTX); //defined "extern" in config.h
 FoxConfig globalConfiguration; //defined "extern" in config.h
 
-char senderId[] = { 'A', 'U', 'V', 'H', '5', 'N', 'D', 'B' };
+const char senderId[] = { 'A', 'U', 'V', 'H', '5', 'N', 'D', 'B' };
 
 
 void setup() {
   Serial.begin(9600);
   debugSerial.begin(9600);
 
-  debugSerial.println("FoxHunt booting");
+  debugSerial.println( F("FoxHunt booting") );
 
   pinMode(PIN_FOXNO_0, INPUT);
   pinMode(PIN_FOXNO_1, INPUT);
@@ -48,7 +48,10 @@ void setup() {
 
   smsHandler.init();
   
-  globalConfiguration.onSms = 1; //default on, until turned off    
+  globalConfiguration.onSms = 1; //default on, until turned off  
+  
+  globalConfiguration.startTime = 0;
+  globalConfiguration.stopTime = 2359;  
 }
 
 
@@ -77,20 +80,17 @@ void morseController() {
   char call[10];
   sprintf(call, "OZ7FOX%c", senderId[ globalConfiguration.foxNumber ]);
   morse.setMessage(call);  
-  debugSerial.print("Sending morse, call=");
+  debugSerial.print( F("Sending morse, call=") );
   debugSerial.println(call);
   
-  
-  morse.sendMorse();
-  morse.sendLongSignal(10000);//Pejlestreg
-  morse.sendLongSignal(10000);//Pejlestreg
-  morse.sendMorse();
-  morse.sendLongSignal(10000);//Pejlestreg
-  morse.sendLongSignal(10000);//Pejlestreg
-  morse.sendMorse();
 
-  
-  
+  morse.sendMorse();
+  morse.sendLongSignal(10000);//Pejlestreg
+  morse.sendLongSignal(10000);//Pejlestreg
+  morse.sendMorse();
+  morse.sendLongSignal(10000);//Pejlestreg
+  morse.sendLongSignal(10000);//Pejlestreg
+  morse.sendMorse();
   
   
 }

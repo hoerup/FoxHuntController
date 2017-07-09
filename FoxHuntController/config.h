@@ -26,7 +26,8 @@ struct FoxConfig {
   unsigned short onHw : 1;
   
   unsigned short foxNumber : 3;
-  
+  unsigned short startTime;
+  unsigned short stopTime;  
 };
 
 

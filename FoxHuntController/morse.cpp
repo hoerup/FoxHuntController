@@ -5,7 +5,7 @@
 
 
 //Build a struct with the morse code mapping
-static const char* MorseMap[] =
+const char* const MorseMap[] =
 {
   ".-" , //A
   "-..." , //B
@@ -44,8 +44,10 @@ static const char* MorseMap[] =
   "--...", //7
   "---..", //8
   "----." //9
-
 };
+
+
+int x = 0b0100;
 
 
 Morse::Morse(short pin) {  
