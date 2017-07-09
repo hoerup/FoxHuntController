@@ -10,7 +10,7 @@
  * Pin8 - radiocontrol - used to send morse signal to radio
  * 
  * 
- * Make sure you have installed DFRobot_SIM808 from https://github.com/DFRobot/DFRobot_SIM808/
+ * Make sure you have installed DFRobot_SIM808 from hoerup's fork of DFRobot_SIM808 https://github.com/hoerup/DFRobot_SIM808/ (at least until the enhancements are accepted into main codebase)
  */
 
 

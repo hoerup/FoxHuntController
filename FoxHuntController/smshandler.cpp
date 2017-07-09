@@ -7,7 +7,7 @@
 #define MESSAGE_LENGTH 160
 
 char message[MESSAGE_LENGTH];
-int messageIndex = 0;
+
 
 char phone[16];
 char datetime[24];
@@ -67,8 +67,12 @@ void SmsHandler::handleSms() {
   millisLastRead = millis();
 
   
+  sim808.stopGpsDataflow();
+  sim808_flush_serial();
+
   
-  messageIndex = sim808.isSMSunread();
+  
+  int messageIndex = sim808.isSMSunread();
 
 
   //*********** At least, there is one UNREAD SMS ****-*******
@@ -85,6 +89,8 @@ void SmsHandler::handleSms() {
 
     parseSms();
   }
+
+  sim808.startGpsDataflow();
 }
 
 
