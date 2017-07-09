@@ -22,10 +22,10 @@
 
 
 struct FoxConfig {
-  short onSms : 1;
-  short onHw : 1;
+  unsigned short onSms : 1;
+  unsigned short onHw : 1;
   
-  short foxNumber : 3;
+  unsigned short foxNumber : 3;
   
 };
 

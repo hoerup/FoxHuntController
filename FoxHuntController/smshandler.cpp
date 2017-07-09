@@ -71,16 +71,19 @@ void SmsHandler::handleSms() {
   messageIndex = sim808.isSMSunread();
 
 
-  //*********** At least, there is one UNREAD SMS ***********
+  //*********** At least, there is one UNREAD SMS ****-*******
   if (messageIndex > 0) { 
     debugSerial.print("messageIndex: ");
     debugSerial.println(messageIndex);    
     
     sim808.readSMS(messageIndex, message, MESSAGE_LENGTH, phone, datetime);
-    parseSms();
+    
                  
     //***********In order not to full SIM Memory, is better to delete it**********
     sim808.deleteSMS(messageIndex);    
+
+
+    parseSms();
   }
 }
 
@@ -93,12 +96,36 @@ void SmsHandler::parseSms() {
     debugSerial.print("Recieved Message: ");
     debugSerial.println(message);      
 
+    for (int i=0; i<strlen(message); i++) { //in-place str-to-upper
+      message[i] = toupper(message[i]); 
+    }
     
+    if (strncmp("STATUS", message, 6) == 0) {
+      sendStatusReply();
+      return;
+    }
 
 
     sim808.sendSMS(phone, "Unknown Command");
 }
 
+void SmsHandler::sendStatusReply() {
+  char reply[120] ;
+  
+  char lat[10];
+  char lon[10];  
+  dtostrf(sim808.GPSdata.lat, 2, 6, lat); //since sprintf doesn't support %f
+  dtostrf(sim808.GPSdata.lon, 2, 6, lon);
+
+  sprintf(reply, "Fox:%i Ho:%i So:%i T:%02d:%02d:%02d(utc) Loc:%s,%s", 
+      globalConfiguration.foxNumber,globalConfiguration.onHw, globalConfiguration.onSms, 
+      sim808.GPSdata.hour, sim808.GPSdata.minute, sim808.GPSdata.second,
+      lat,lon
+      );
+      
+  sim808.sendSMS(phone, reply);      
+      
+}
 
 void SmsHandler::debugPrintGps() {
   debugSerial.print(sim808.GPSdata.year);

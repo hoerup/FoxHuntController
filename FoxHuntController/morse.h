@@ -5,7 +5,7 @@
 class Morse {
 
   public:
-    Morse(int pin);
+    Morse(short pin);
     void setDitLength(int len);
     void setMessage(const char* msg);
 

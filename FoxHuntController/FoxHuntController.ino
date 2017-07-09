@@ -31,6 +31,7 @@ FoxConfig globalConfiguration; //defined "extern" in config.h
 
 char senderId[] = { 'A', 'U', 'V', 'H', '5', 'N', 'D', 'B' };
 
+
 void setup() {
   Serial.begin(9600);
   debugSerial.begin(9600);
@@ -46,8 +47,10 @@ void setup() {
 
 
   smsHandler.init();
-    
+  
+  globalConfiguration.onSms = 1; //default on, until turned off    
 }
+
 
 void loop() {
 
@@ -71,12 +74,22 @@ void morseController() {
 
   //early exit hvis det ikke er tid til udsendelse
 
-  char call[20];
+  char call[10];
   sprintf(call, "OZ7FOX%c", senderId[ globalConfiguration.foxNumber ]);
-  morse.setMessage(call);
+  morse.setMessage(call);  
+  debugSerial.print("Sending morse, call=");
+  debugSerial.println(call);
+  
+  
+  morse.sendMorse();
+  morse.sendLongSignal(10000);//Pejlestreg
+  morse.sendLongSignal(10000);//Pejlestreg
+  morse.sendMorse();
+  morse.sendLongSignal(10000);//Pejlestreg
+  morse.sendLongSignal(10000);//Pejlestreg
   morse.sendMorse();
 
-  morse.sendLongSignal(10000);
+  
   
   
   

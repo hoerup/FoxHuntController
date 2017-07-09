@@ -48,10 +48,10 @@ static const struct {const char letter, *code;} MorseMap[] =
 };
 
 
-Morse::Morse(int pin) {  
+Morse::Morse(short pin) {  
   outpin = pin;
 
-  this->setDitLength( 50 );
+  this->setDitLength( 60 );
   
   pinMode(outpin, OUTPUT);
   digitalWrite(outpin, LOW);
