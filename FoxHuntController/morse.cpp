@@ -5,45 +5,45 @@
 
 
 //Build a struct with the morse code mapping
-static const struct {const char letter, *code;} MorseMap[] =
+static const char* MorseMap[] =
 {
-  { 'A', ".-" },
-  { 'B', "-..." },
-  { 'C', "-.-." },
-  { 'D', "-.." },
-  { 'E', "." },
-  { 'F', "..-." },
-  { 'G', "--." },
-  { 'H', "...." },
-  { 'I', ".." },
-  { 'J', ".---" },
-  { 'K', ".-.-" },
-  { 'L', ".-.." },
-  { 'M', "--" },
-  { 'N', "-." },
-  { 'O', "---" },
-  { 'P', ".--." },
-  { 'Q', "--.-" },
-  { 'R', ".-." },
-  { 'S', "..." },
-  { 'T', "-" },
-  { 'U', "..-" },
-  { 'V', "...-" },
-  { 'W', ".--" },
-  { 'X', "-..-" },
-  { 'Y', "-.--" },
-  { 'Z', "--.." },
+  ".-" , //A
+  "-..." , //B
+  "-.-." , //C
+  "-.." , //D
+  "." , //E
+  "..-." , //F
+  "--." , //G
+  "...." , //H
+  ".." , //I
+  ".---" , //J
+  ".-.-" , //K
+  ".-.." , //L
+  "--" , //M
+  "-." , //N
+  "---" , //O
+  ".--." , //P
+  "--.-" , //Q
+  ".-." , //R 
+  "..." , //S
+  "-" , //T
+  "..-", //U
+  "...-", //V
+  ".--", //W
+  "-..-", //X
+  "-.--", //Y
+  "--..", //Z
 
-  { '0', "-----" },
-  { '1', ".----" },
-  { '2', "..---" },
-  { '3', "...--" },
-  { '4', "....-" },
-  { '5', "....." },
-  { '6', "-...." },
-  { '7', "--..." },
-  { '8', "---.." },
-  { '9', "----." },
+  "-----", //0
+  ".----", //1
+  "..---", //2
+  "...--", //3
+  "....-", //4
+  ".....", //5
+  "-....", //6
+  "--...", //7
+  "---..", //8
+  "----." //9
 
 };
 
@@ -51,7 +51,7 @@ static const struct {const char letter, *code;} MorseMap[] =
 Morse::Morse(short pin) {  
   outpin = pin;
 
-  this->setDitLength( 60 );
+  this->setDitLength( 200 );
   
   pinMode(outpin, OUTPUT);
   digitalWrite(outpin, LOW);
@@ -126,11 +126,11 @@ void Morse::sendChar(char ch) {
   
   if (ch >= 'A' && ch <= 'Z') {
     short pos = ch - 'A';
-    sendDitAndDah( MorseMap[pos].code );
+    sendDitAndDah( MorseMap[pos] );
   } else if (ch >= '0' && ch <= '9' ) {
     short pos = ch - '0';
     pos += 26; 
-    sendDitAndDah( MorseMap[pos].code );
+    sendDitAndDah( MorseMap[pos] );
   } else {
     delay( ditlength *5);
   }
