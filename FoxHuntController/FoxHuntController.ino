@@ -81,6 +81,11 @@ void morseController() {
   if ( (tmpCurrentTime % globalConfiguration.transmitInterval) != globalConfiguration.foxNumber) {
     return;
   }
+
+  //don't transmit if we are outside allowed transmit timeslot
+  if (tmpCurrentTime < globalConfiguration.startTime || tmpCurrentTime > globalConfiguration.stopTime) {
+    return;
+  }
   
 
   char call[10];
