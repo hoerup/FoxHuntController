@@ -47,6 +47,8 @@ void setup() {
   
   globalConfiguration.startTime = 0;
   globalConfiguration.stopTime = 2359;  
+
+  globalConfiguration.currentTime = 0;
 }
 
 
@@ -66,6 +68,11 @@ void loop() {
 void morseController() {
   
   if (globalConfiguration.onHw == 0 || globalConfiguration.onSms == 0)  { //this fox has been shut off by switch or sms
+    return;
+  }
+
+  //no transmission if we don't have a time reading
+  if (globalConfiguration.currentTime  == 0) {
     return;
   }
 
