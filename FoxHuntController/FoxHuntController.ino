@@ -3,12 +3,7 @@
  * 
  * Developed for arduino uno with DFRobot SIM808 GSM shield
  * 
- * Pin0 & Pin1 (RX/TX) are reserved for communication between arduino and the GSM chip
- * Pin12 is reserved for controlling gsm shield powerup/down
- * 
- * Pin2 - readyLED - used to indicate that GSM is ready
- * Pin8 - radiocontrol - used to send morse signal to radio
- * 
+ * For pin assignments please refer to config.h
  * 
  * Make sure you have installed DFRobot_SIM808 from hoerup's fork of DFRobot_SIM808 https://github.com/hoerup/DFRobot_SIM808/ (at least until the enhancements are accepted into main codebase)
  */
