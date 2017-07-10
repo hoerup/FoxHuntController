@@ -130,6 +130,8 @@ void SmsHandler::parseSms() {
       return;
     }
 
+    // handling of start-stop time
+    // format "A:0800-2300"
     if (strncmp("A:", message, 2) == 0) {
       if (strlen(message) != 11) {
         sim808.sendSMS(phone, "Error, inval length");    
@@ -157,6 +159,21 @@ void SmsHandler::parseSms() {
 
       sim808.sendSMS(phone, "Ok");  
       return;
+    }
+
+    //handle set transmission interval
+    if (strncmp("I:", message, 2) == 0) {
+      strncpy(tmpstr, message+2, 4);
+      tmpstr[4] = 0;
+      unsigned short tmpInterval = atoi(tmpstr);
+
+      if (tmpInterval != 5 && tmpInterval != 10) {
+        sim808.sendSMS(phone, "Error, invalid interval (5/10)");    
+        return ;  
+      }
+      globalConfiguration.transmitInterval = tmpInterval;
+      sim808.sendSMS(phone, "Ok");  
+      return;      
     }
 
 
