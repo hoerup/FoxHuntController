@@ -27,7 +27,11 @@ struct FoxConfig {
   
   unsigned short foxNumber : 3;
   unsigned short startTime;
-  unsigned short stopTime;  
+  unsigned short stopTime;
+
+  unsigned short transmitInterval = 5;
+
+  unsigned long currentTime; //32bit
 };
 
 

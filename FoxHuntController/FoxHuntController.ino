@@ -68,9 +68,13 @@ void morseController() {
   if (globalConfiguration.onHw == 0 || globalConfiguration.onSms == 0)  { //this fox has been shut off by switch or sms
     return;
   }
-  
 
-  //early exit hvis det ikke er tid til udsendelse
+  //early exit if it's not this fox's transmit time
+  long tmpCurrentTime = globalConfiguration.currentTime / 100;
+  if ( (tmpCurrentTime % globalConfiguration.transmitInterval) != globalConfiguration.foxNumber) {
+    return;
+  }
+  
 
   char call[10];
   sprintf(call, "OZ7FOX%c", senderId[ globalConfiguration.foxNumber ]);
