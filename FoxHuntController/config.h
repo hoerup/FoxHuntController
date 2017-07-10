@@ -27,7 +27,7 @@ struct FoxConfig {
   unsigned short startTime;
   unsigned short stopTime;
 
-  unsigned short transmitInterval = 5;
+  unsigned char transmitInterval = 5;
 };
 
 //contains data that should be globally available - but due to its dynamic properties shouldn't be saved to eeprom

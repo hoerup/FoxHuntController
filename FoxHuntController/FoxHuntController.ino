@@ -43,12 +43,24 @@ void setup() {
 
 
 
-  smsHandler.init();
+
+  
 
   EEPROM.get(0, globalConfiguration);
+  if (globalConfiguration.transmitInterval == 255) { //initially EEPROM is set to 0xFF
+    globalConfiguration.transmitInterval = 10;
+    globalConfiguration.startTime = 0;
+    globalConfiguration.stopTime = 2359;
+
+    EEPROM.put(0, globalConfiguration);
+  }
   
 
   globalVolatile.currentTime = 0;
+
+
+
+  smsHandler.init();
 }
 
 
