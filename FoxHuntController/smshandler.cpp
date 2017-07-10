@@ -2,7 +2,7 @@
 #include "config.h"
 
 #include <DFRobot_sim808.h>
-
+#include <EEPROM.h>
 
 #define MESSAGE_LENGTH 80 // ja SMS kan teknisk set være længere - men kommando SMS'erne er væsentlig kortere
 
@@ -57,7 +57,7 @@ void SmsHandler::handleSms() {
   //gps aflæsning skal køre ofte, bl.a. for at rydde input køen !
   if (sim808.getGPS()) {    
     debugPrintGps();
-    globalConfiguration.currentTime = (sim808.GPSdata.hour * 10000L) + (sim808.GPSdata.minute * 100L) + sim808.GPSdata.second;    
+    globalVolatile.currentTime = (sim808.GPSdata.hour * 10000L) + (sim808.GPSdata.minute * 100L) + sim808.GPSdata.second;    
     
     
   }
@@ -120,12 +120,14 @@ void SmsHandler::parseSms() {
 
     if (strcmp("ON", message) == 0) {
       globalConfiguration.onSms = 1;
+      EEPROM.put(0, globalConfiguration);
       sim808.sendSMS(phone, "Ok");  
       return;
     }
 
     if (strcmp("OFF", message) == 0) {
       globalConfiguration.onSms = 0;
+      EEPROM.put(0, globalConfiguration);
       sim808.sendSMS(phone, "Ok");  
       return;
     }
@@ -155,8 +157,8 @@ void SmsHandler::parseSms() {
 
       globalConfiguration.startTime = tmpStart;
       globalConfiguration.stopTime = tmpStop;
+      EEPROM.put(0, globalConfiguration);
       
-
       sim808.sendSMS(phone, "Ok");  
       return;
     }
@@ -172,6 +174,8 @@ void SmsHandler::parseSms() {
         return ;  
       }
       globalConfiguration.transmitInterval = tmpInterval;
+      EEPROM.put(0, globalConfiguration);
+      
       sim808.sendSMS(phone, "Ok");  
       return;      
     }
@@ -189,7 +193,7 @@ void SmsHandler::sendStatusReply() {
   dtostrf(sim808.GPSdata.lon, 2, 6, lon);
 
   sprintf(reply, "Fox:%i Ho:%i So:%i T:%02d:%02d:%02d(utc) Loc:%s,%s Int:%d Period:%04d-%04d", 
-      globalConfiguration.foxNumber,globalConfiguration.onHw, globalConfiguration.onSms, 
+      globalVolatile.foxNumber, globalVolatile.onHw, globalConfiguration.onSms, 
       sim808.GPSdata.hour, sim808.GPSdata.minute, sim808.GPSdata.second,
       lat,lon,
       globalConfiguration.transmitInterval,

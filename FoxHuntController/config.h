@@ -20,23 +20,28 @@
 
 #define PIN_GSM_SHIELD_POWERCTRL 12 // This one cant be moved
 
-
+// contains configuration data that should be saved
 struct FoxConfig {
   unsigned short onSms : 1;
-  unsigned short onHw : 1;
-  
-  unsigned short foxNumber : 3;
+
   unsigned short startTime;
   unsigned short stopTime;
 
   unsigned short transmitInterval = 5;
+};
 
-  unsigned long currentTime; //32bit
+//contains data that should be globally available - but due to its dynamic properties shouldn't be saved to eeprom
+struct VolatileData {
+  unsigned short onHw : 1;
+  unsigned short foxNumber : 3;
+  
+  unsigned long currentTime; //32bit    
 };
 
 
 
 extern FoxConfig globalConfiguration;
+extern VolatileData globalVolatile;
 extern SoftwareSerial debugSerial;
 
 #endif // __CONFIG_H__
