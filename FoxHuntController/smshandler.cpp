@@ -65,7 +65,7 @@ void SmsHandler::handleSms() {
 
   //da GPS'en smider data afsted fortløbende  på seriel porten
   //skal vi sikre at SMS aflæsning ikke ødelægger seneste aflæsning
-  if ( abs( millis() - millisLastRead) < 10000 || millis() < 10000) {
+  if ( abs( millis() - millisLastRead) < 15000 ) {
     return;
   }
   millisLastRead = millis();
