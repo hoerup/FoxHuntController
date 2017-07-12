@@ -5,7 +5,7 @@
 class SmsHandler {
   public:
     SmsHandler();
-
+    void readGps();
     void handleSms();
     void init();
     

@@ -53,7 +53,7 @@ int x = 0b0100;
 Morse::Morse(short pin) {  
   outpin = pin;
 
-  this->setDitLength( 200 );
+  this->setDitLength( 100 );
   
   pinMode(outpin, OUTPUT);
   digitalWrite(outpin, LOW);

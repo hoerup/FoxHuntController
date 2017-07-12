@@ -51,16 +51,17 @@ void SmsHandler::init() {
   digitalWrite(PIN_GSM_READY, HIGH);
 
 }
-
-
-void SmsHandler::handleSms() {
-  //gps aflæsning skal køre ofte, bl.a. for at rydde input køen !
+void SmsHandler::readGps() {
+   
   if (sim808.getGPS()) {    
     debugPrintGps();
     globalVolatile.currentTime = (sim808.GPSdata.hour * 10000L) + (sim808.GPSdata.minute * 100L) + sim808.GPSdata.second;    
-    
-    
   }
+  
+}
+
+void SmsHandler::handleSms() {
+ 
 
   //da GPS'en smider data afsted fortløbende  på seriel porten
   //skal vi sikre at SMS aflæsning ikke ødelægger seneste aflæsning
