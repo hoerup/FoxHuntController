@@ -193,8 +193,9 @@ void SmsHandler::sendStatusReply() {
   dtostrf(sim808.GPSdata.lat, 2, 6, lat); //since sprintf doesn't support %f
   dtostrf(sim808.GPSdata.lon, 2, 6, lon);
 
-  sprintf(reply, "Fox:%i Ho:%i So:%i T:%02d:%02d:%02d(utc) Loc:%s,%s Int:%d Period:%04d-%04d", 
-      globalVolatile.foxNumber, globalVolatile.onHw, globalConfiguration.onSms, 
+  sprintf(reply, "Fox:%i/%c Ho:%i So:%i T:%02d:%02d:%02d(utc) Loc:%s,%s Int:%d Period:%04d-%04d", 
+      globalVolatile.foxNumber, globalVolatile.foxChar,      
+      globalVolatile.onHw, globalConfiguration.onSms, 
       sim808.GPSdata.hour, sim808.GPSdata.minute, sim808.GPSdata.second,
       lat,lon,
       globalConfiguration.transmitInterval,

@@ -70,6 +70,7 @@ void loop() {
   // Vi kan godt aflæse ditital inputs hver loop cycle - det  tager ikke mange ms.
   globalVolatile.foxNumber = ( digitalRead(PIN_FOXNO_2) << 2) &  ( digitalRead(PIN_FOXNO_1) << 1) &  digitalRead(PIN_FOXNO_0);
   globalVolatile.onHw = digitalRead(PIN_HW_ONOFF);
+  globalVolatile.foxChar = senderId[ globalVolatile.foxNumber ];
 
   smsHandler.readGps(); //gps aflæsning skal køre ofte, bl.a. for at rydde input køen !
   
@@ -110,7 +111,7 @@ void morseController() {
   
 
   char call[10];
-  sprintf(call, "OZ7FOX%c", senderId[ globalVolatile.foxNumber ]);
+  sprintf(call, "OZ7FOX%c", globalVolatile.foxChar);
   morse.setMessage(call);  
   debugSerial.print( F("Sending morse, call=") );
   debugSerial.println(call);

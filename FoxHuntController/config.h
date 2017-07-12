@@ -34,6 +34,7 @@ struct FoxConfig {
 struct VolatileData {
   unsigned short onHw : 1;
   unsigned short foxNumber : 3;
+  unsigned char foxChar;
   
   unsigned long currentTime; //32bit    
 };
