@@ -22,10 +22,13 @@ SmsHandler::SmsHandler()
 
 void SmsHandler::init() {
   pinMode(PIN_GSM_READY, OUTPUT);
+  pinMode(PIN_GSM_SHIELD_POWERCTRL, OUTPUT);
+  
   digitalWrite(PIN_GSM_READY, LOW);
 
   
   if (! sim808.checkPowerUp() ) {
+    debugSerial.println( F("Sending Sim808 boot signal") );
     sim808.powerUpDown(PIN_GSM_SHIELD_POWERCTRL);
   }
 
