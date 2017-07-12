@@ -12,6 +12,9 @@ class Morse {
     void sendLongSignal(short ms);
 
     void sendMorse();
+
+    short getDitLength();
+    short getCharInterval();
     
 
   private:

@@ -73,6 +73,14 @@ void Morse::setDitLength(int len) {
   wordInterval = ditlength * 7;
 }
 
+short Morse::getDitLength() {
+  return ditlength;
+}
+
+short Morse::getCharInterval() {
+  return charInterval;
+}
+
 void Morse::setMessage(const char* msg) {
   message = msg;
 }

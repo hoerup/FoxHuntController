@@ -150,6 +150,7 @@ void sendLongSignal(int ms) {
   }
 
   digitalWrite(PIN_MORSE, LOW);
+  delay( morse.getCharInterval() );
 }
 
 
