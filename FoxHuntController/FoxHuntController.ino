@@ -109,7 +109,11 @@ void morseController() {
   }
 
   // there must go a whole minute between transmissions
-  if ( ( millis() - lastMorseTransmission) < 60000 ) {
+  if ( ( millis() - lastMorseTransmission) <= 60000 ) {
+    return;
+  }
+
+  if (currentTime.second >= 59) { //bugfix no transmission at 59th second (prevent double transmisison)
     return;
   }
   lastMorseTransmission = millis();
