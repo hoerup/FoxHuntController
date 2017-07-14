@@ -130,19 +130,19 @@ void morseController() {
   debugSerial.println(bearingLength);
   
   
-  sendLongSignal(bearingLength);//Pejlestreg
-  sendLongSignal(bearingLength);//Pejlestreg
+  sendBearingSignal(bearingLength);//Pejlestreg
+  sendBearingSignal(bearingLength);//Pejlestreg
   morse.sendMorse(); //midterste sending af call
   
-  sendLongSignal(bearingLength);//Pejlestreg
-  sendLongSignal(bearingLength);//Pejlestreg
+  sendBearingSignal(bearingLength);//Pejlestreg
+  sendBearingSignal(bearingLength);//Pejlestreg
   morse.sendMorse(); //sidste sending af call
 
 
   debugSerial.println( F("Done sending morse") );
 }
 
-void sendLongSignal(int ms) {
+void sendBearingSignal(int ms) {
   long start = millis();
   digitalWrite(PIN_MORSE, HIGH);
 
