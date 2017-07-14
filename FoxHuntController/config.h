@@ -35,11 +35,21 @@ struct VolatileData {
   unsigned short onHw : 1;
   unsigned short foxNumber : 3;
   unsigned char foxChar;
-  
-  unsigned long currentTime; //32bit    
+
+
+  unsigned long lastTimeUpdate = 0;  
+  short timeHour;
+  short timeMinute;
+  short timeSecond;
 };
 
+struct Time {
+  short hour;
+  short minute;
+  short second;
+};
 
+Time getCorrectedTime();
 
 extern FoxConfig globalConfiguration;
 extern VolatileData globalVolatile;

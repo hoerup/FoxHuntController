@@ -29,6 +29,8 @@ VolatileData globalVolatile; //defined "extern" in config.h
 const char senderId[] = { 'A', 'U', 'V', 'H', '5', 'N', 'D', 'B' };
 
 unsigned long lastMorseTransmission = 0;
+unsigned long lastTimePrint = 0;
+
 
 void setup() {
   Serial.begin(9600);
@@ -57,7 +59,7 @@ void setup() {
   }
   
 
-  globalVolatile.currentTime = 0;
+  globalVolatile.lastTimeUpdate = 0;
 
 
 
@@ -88,17 +90,20 @@ void morseController() {
   }
 
   //no transmission if we don't have a time reading
-  if (globalVolatile.currentTime  == 0) {
+  if (globalVolatile.lastTimeUpdate  == 0) {
     return;
   }
 
+  Time currentTime = getCorrectedTime();
+
+
   //early exit if it's not this fox's transmit time
-  long tmpCurrentTime = globalVolatile.currentTime / 100;
-  if ( (tmpCurrentTime % globalConfiguration.transmitInterval) != globalVolatile.foxNumber) {
+  if ( (currentTime.minute % globalConfiguration.transmitInterval) != globalVolatile.foxNumber) {
     return;
   }
 
   //don't transmit if we are outside allowed transmit timeslot
+  short tmpCurrentTime = (currentTime.hour * 100) + currentTime.minute;
   if (tmpCurrentTime < globalConfiguration.startTime || tmpCurrentTime > globalConfiguration.stopTime) {
     return;
   }
@@ -108,6 +113,8 @@ void morseController() {
     return;
   }
   lastMorseTransmission = millis();
+
+  printTime(currentTime);
   
 
   char call[10];
@@ -116,6 +123,7 @@ void morseController() {
   debugSerial.print( F("Sending morse, call=") );
   debugSerial.println(call);
   
+
 
   long startTime = millis();
   morse.sendMorse();//første sending af call
@@ -154,4 +162,48 @@ void sendBearingSignal(int ms) {
   delay( morse.getCharInterval() );
 }
 
+
+Time getCorrectedTime() {
+  
+  Time time;
+  
+  long elapsed = millis() - globalVolatile.lastTimeUpdate;
+  elapsed /= 1000; //ikke intereseret i millisekunder
+  
+  short elapsHour = elapsed / (60*60);
+  short elapsMin = (elapsed/60) % (60);
+  short elapsSec = elapsed % 60;
+
+  time.second = globalVolatile.timeSecond + elapsSec;  
+  time.minute = globalVolatile.timeMinute + elapsMin;
+  time.hour = (globalVolatile.timeHour + elapsHour) % 24;
+
+  //overskydende sekunder
+  time.minute += time.second / 60;
+  time.second %= 60;
+
+  //overskydende minutter
+  time.hour += time.minute / 60;
+  time.minute %= 60;
+
+  time.hour %= 24;
+
+  if ( elapsed > 2 && (millis() - lastTimePrint)  >= 1000) {
+    printTime(time);
+    lastTimePrint = millis();
+  }
+
+    
+  return time;
+}
+
+
+void printTime(Time& time) {
+  debugSerial.print( F("Time: "));
+  debugSerial.print( time.hour);
+  debugSerial.print( F(":") );
+  debugSerial.print( time.minute);
+  debugSerial.print( F(":") );
+  debugSerial.println( time.second);
+}
 

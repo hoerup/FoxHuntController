@@ -58,12 +58,23 @@ void SmsHandler::readGps() {
    
   if (sim808.getGPS()) {    
     debugPrintGps();
-    globalVolatile.currentTime = (sim808.GPSdata.hour * 10000L) + (sim808.GPSdata.minute * 100L) + sim808.GPSdata.second;    
+
+    globalVolatile.timeHour = sim808.GPSdata.hour;
+    globalVolatile.timeMinute = sim808.GPSdata.minute;
+    globalVolatile.timeSecond = sim808.GPSdata.second;    
+    globalVolatile.lastTimeUpdate = millis();
+    
   }
   
 }
 
 void SmsHandler::handleSms() {
+
+  Time time = getCorrectedTime();
+  
+  if (time.second > 45 || time.second < 5) { // vi læser ikke gps mellem :45 og :05 - for at sikre at vi ikke blokerer en morse transmission
+    return;
+  }
  
 
   //da GPS'en smider data afsted fortløbende  på seriel porten
@@ -72,6 +83,8 @@ void SmsHandler::handleSms() {
     return;
   }
   millisLastRead = millis();
+
+  
 
   
   sim808.stopGpsDataflow();
