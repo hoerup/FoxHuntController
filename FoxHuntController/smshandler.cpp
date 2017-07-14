@@ -72,7 +72,7 @@ void SmsHandler::handleSms() {
 
   Time time = getCorrectedTime();
   
-  if (time.second > 45 || time.second < 5) { // vi læser ikke gps mellem :45 og :05 - for at sikre at vi ikke blokerer en morse transmission
+  if (time.second > 45 || time.second < 5) { // vi læser ikke SMS mellem :45 og :05 - for at sikre at vi ikke blokerer en morse transmission
     return;
   }
  
