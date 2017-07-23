@@ -214,6 +214,24 @@ void SmsHandler::parseSms() {
       return;  
     }
 
+    if (strncmp("FOX:", message, 4) == 0) {
+      strncpy(tmpstr, message+4, 4);
+      tmpstr[4] = 0;
+      unsigned short tmpFox = atoi(tmpstr);
+
+      if (tmpFox > 7) {
+        sim808.sendSMS(phone, "Error: Fox must be between 0 and 7 (inclusive)");    
+        return ;  
+      }
+      globalConfiguration.foxNumber = tmpFox;
+      EEPROM.put(0, globalConfiguration);
+      
+      sim808.sendSMS(phone, "Ok");  
+      return;  
+    }
+
+    
+
 
     sim808.sendSMS(phone, "Unknown Command");
 }
@@ -227,7 +245,7 @@ void SmsHandler::sendStatusReply() {
   dtostrf(sim808.GPSdata.lon, 2, 6, lon);
 
   sprintf(reply, "Fox:%i/%c Ho:%i So:%i Dit:%d T:%02d:%02d:%02d(utc) Loc:%s,%s Int:%d Period:%04d-%04d", 
-      globalVolatile.foxNumber, globalVolatile.foxChar,      
+      globalConfiguration.foxNumber, globalVolatile.foxChar,      
       globalVolatile.onHw, globalConfiguration.onSms,
       globalConfiguration.ditLength,
       sim808.GPSdata.hour, sim808.GPSdata.minute, sim808.GPSdata.second,
