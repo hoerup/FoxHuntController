@@ -7,13 +7,9 @@
 #define PIN_SOFTRX 2 // rx fra debug rs232 shield 
 #define PIN_SOFTTX 3 // tx til debug rs232 shield 
 #define PIN_GSM_READY 4 // LED out til at indikere at vi har gsm signal
-#define PIN_MORSE 5 // 
+#define PIN_GPS_READY 5 //LED out til at indikere at vi har tid fra gps
+#define PIN_MORSE 6 // 
 
-
-//3 hardware pins to make a 3bit digital input defining fox number
-#define PIN_FOXNO_0 6 // least significant bit
-#define PIN_FOXNO_1 7
-#define PIN_FOXNO_2 8 // most significant bit
 
 #define PIN_HW_ONOFF 9
 

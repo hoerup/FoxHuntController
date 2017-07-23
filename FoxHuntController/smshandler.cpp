@@ -22,9 +22,12 @@ SmsHandler::SmsHandler()
 
 void SmsHandler::init() {
   pinMode(PIN_GSM_READY, OUTPUT);
+  pinMode(PIN_GPS_READY, OUTPUT);
+  
   pinMode(PIN_GSM_SHIELD_POWERCTRL, OUTPUT);
   
   digitalWrite(PIN_GSM_READY, LOW);
+  digitalWrite(PIN_GPS_READY, LOW);
 
   
   if (! sim808.checkPowerUp() ) {
@@ -58,6 +61,8 @@ void SmsHandler::readGps() {
    
   if (sim808.getGPS()) {    
     debugPrintGps();
+
+    digitalWrite(PIN_GPS_READY, HIGH);
 
     globalVolatile.timeHour = sim808.GPSdata.hour;
     globalVolatile.timeMinute = sim808.GPSdata.minute;
@@ -202,8 +207,8 @@ void SmsHandler::parseSms() {
       tmpstr[4] = 0;
       unsigned short tmpDit = atoi(tmpstr);
 
-      if (tmpDit < 20 || tmpDit > 150) {
-        sim808.sendSMS(phone, "Error, dit must be be between 20 and 150 (inclusive)");    
+      if (tmpDit < 20 || tmpDit > 140) {
+        sim808.sendSMS(phone, "Error, dit must be be between 20 and 140 (inclusive)");    
         return ;  
       }
       globalConfiguration.ditLength = tmpDit;

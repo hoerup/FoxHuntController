@@ -38,9 +38,6 @@ void setup() {
 
   debugSerial.println( F("FoxHunt booting") );
 
-  pinMode(PIN_FOXNO_0, INPUT);
-  pinMode(PIN_FOXNO_1, INPUT);
-  pinMode(PIN_FOXNO_2, INPUT);
 
   pinMode(PIN_HW_ONOFF, INPUT);
 
@@ -139,11 +136,17 @@ void morseController() {
 
   long elapsed = stopTime-startTime;
   int bearingLength = (50000L - (3*elapsed) ) / 4; // samlet udsendelse skal vare 50 ca sekunder - så for at finde længden af pejlestreg tages samlet tid og fratrækkes 3x kaldesignal. Den resterende mængde deles i 4 (4 pejlestreger)
+
+
   
   debugSerial.print( F("elapsed=") );
   debugSerial.println(elapsed);
   debugSerial.print( F("bearingLength=") );
   debugSerial.println(bearingLength);
+  
+  if (bearingLength < 1000) {  //ditlength=140 giver en lille negativ bearing Length - så vi overstyrer og siger mindst 1 sek
+    bearingLength = 1000;
+  }
   
   
   sendBearingSignal(bearingLength);//Pejlestreg
