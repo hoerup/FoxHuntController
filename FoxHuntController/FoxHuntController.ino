@@ -61,6 +61,7 @@ void setup() {
 
   globalVolatile.lastTimeUpdate = 0;
 
+  morse.setDitLength( globalConfiguration.ditLength );
 
 
   smsHandler.init(); 

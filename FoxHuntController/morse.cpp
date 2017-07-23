@@ -52,8 +52,6 @@ int x = 0b0100;
 
 Morse::Morse(short pin) {  
   outpin = pin;
-
-  this->setDitLength( 100 );
   
   pinMode(outpin, OUTPUT);
   digitalWrite(outpin, LOW);
@@ -61,11 +59,11 @@ Morse::Morse(short pin) {
 
 
 void Morse::setDitLength(int len) {
-  if (len < 50) //len may not be lower than 100
-    len = 50;
+  if (len < 40) //len may not be lower than 100
+    len = 40;
 
-  if (len > 2000) //len may bot me larger than 2000
-    len = 2000;
+  if (len > 150) //len may bot me larger than 2000
+    len = 150;
       
   ditlength = len;
 

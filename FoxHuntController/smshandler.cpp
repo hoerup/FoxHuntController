@@ -197,6 +197,23 @@ void SmsHandler::parseSms() {
       return;      
     }
 
+    if (strncmp("DIT:", message, 4) == 0) {
+      strncpy(tmpstr, message+4, 4);
+      tmpstr[4] = 0;
+      unsigned short tmpDit = atoi(tmpstr);
+
+      if (tmpDit < 20 || tmpDit > 150) {
+        sim808.sendSMS(phone, "Error, dit must be be between 20 and 150 (inclusive)");    
+        return ;  
+      }
+      globalConfiguration.ditLength = tmpDit;
+      EEPROM.put(0, globalConfiguration);
+      morse.setDitLength( globalConfiguration.ditLength );
+      
+      sim808.sendSMS(phone, "Ok");  
+      return;  
+    }
+
 
     sim808.sendSMS(phone, "Unknown Command");
 }
@@ -209,9 +226,10 @@ void SmsHandler::sendStatusReply() {
   dtostrf(sim808.GPSdata.lat, 2, 6, lat); //since sprintf doesn't support %f
   dtostrf(sim808.GPSdata.lon, 2, 6, lon);
 
-  sprintf(reply, "Fox:%i/%c Ho:%i So:%i T:%02d:%02d:%02d(utc) Loc:%s,%s Int:%d Period:%04d-%04d", 
+  sprintf(reply, "Fox:%i/%c Ho:%i So:%i Dit:%d T:%02d:%02d:%02d(utc) Loc:%s,%s Int:%d Period:%04d-%04d", 
       globalVolatile.foxNumber, globalVolatile.foxChar,      
-      globalVolatile.onHw, globalConfiguration.onSms, 
+      globalVolatile.onHw, globalConfiguration.onSms,
+      globalConfiguration.ditLength,
       sim808.GPSdata.hour, sim808.GPSdata.minute, sim808.GPSdata.second,
       lat,lon,
       globalConfiguration.transmitInterval,

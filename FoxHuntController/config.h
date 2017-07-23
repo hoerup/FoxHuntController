@@ -2,7 +2,7 @@
 #define __CONFIG_H__
 
 #include <SoftwareSerial.h>
-
+#include "morse.h"
 
 #define PIN_SOFTRX 2 // rx fra debug rs232 shield 
 #define PIN_SOFTTX 3 // tx til debug rs232 shield 
@@ -28,6 +28,8 @@ struct FoxConfig {
   unsigned short stopTime;
 
   unsigned char transmitInterval = 5;
+
+  unsigned short ditLength;
 };
 
 //contains data that should be globally available - but due to its dynamic properties shouldn't be saved to eeprom
@@ -54,5 +56,6 @@ Time getCorrectedTime();
 extern FoxConfig globalConfiguration;
 extern VolatileData globalVolatile;
 extern SoftwareSerial debugSerial;
+extern Morse morse;
 
 #endif // __CONFIG_H__
