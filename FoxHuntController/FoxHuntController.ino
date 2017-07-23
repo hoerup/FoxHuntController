@@ -72,7 +72,8 @@ void loop() {
 
   // Vi kan godt aflæse ditital inputs hver loop cycle - det  tager ikke mange ms.
   globalVolatile.foxNumber = ( digitalRead(PIN_FOXNO_2) << 2) &  ( digitalRead(PIN_FOXNO_1) << 1) &  digitalRead(PIN_FOXNO_0);
-  globalVolatile.onHw = digitalRead(PIN_HW_ONOFF);
+  //globalVolatile.onHw = digitalRead(PIN_HW_ONOFF);
+  globalVolatile.onHw = 1; //Always on - for now
   globalVolatile.foxChar = senderId[ globalVolatile.foxNumber ];
 
   smsHandler.readGps(); //gps aflæsning skal køre ofte, bl.a. for at rydde input køen !
