@@ -52,6 +52,8 @@ void setup() {
     globalConfiguration.startTime = 0;
     globalConfiguration.stopTime = 2359;
 
+    globalConfiguration.ditLength = 100;
+
     EEPROM.put(0, globalConfiguration);
   }
   
