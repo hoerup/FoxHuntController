@@ -54,7 +54,7 @@ Morse::Morse(short pin) {
   outpin = pin;
   
   pinMode(outpin, OUTPUT);
-  digitalWrite(outpin, LOW);
+  digitalWrite(outpin, HIGH);
 }
 
 
@@ -97,23 +97,23 @@ void Morse::sendMorse() {
 
 
 void Morse::sendLongSignal(short ms) {
-  digitalWrite(outpin, HIGH);
-  delay(ms);  
   digitalWrite(outpin, LOW);
+  delay(ms);  
+  digitalWrite(outpin, HIGH);
   delay(wordInterval);  
 }
 
 void Morse::sendDit() {
-  digitalWrite(outpin, HIGH);
-  delay(ditlength);  
   digitalWrite(outpin, LOW);
+  delay(ditlength);  
+  digitalWrite(outpin, HIGH);
   delay(ditlength);
 }
 
 void Morse::sendDah() {
-  digitalWrite(outpin, HIGH);
-  delay(ditlength * 3);  
   digitalWrite(outpin, LOW);
+  delay(ditlength * 3);  
+  digitalWrite(outpin, HIGH);
   delay(ditlength);
 }
 

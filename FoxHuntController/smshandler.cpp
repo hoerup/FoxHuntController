@@ -9,6 +9,7 @@
 char message[MESSAGE_LENGTH];
 
 
+
 char phone[16];
 char datetime[24];
 
@@ -158,7 +159,7 @@ void SmsHandler::parseSms() {
     // format "A:0800-2300"
     if (strncmp("A:", message, 2) == 0) {
       if (strlen(message) != 11) {
-        sim808.sendSMS(phone, "Error, inval length");    
+        sim808.sendSMS(phone, "Error, invalid length" );    
         return ;
       }
       strncpy(tmpstr, message+2, 4);

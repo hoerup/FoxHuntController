@@ -165,13 +165,13 @@ void morseController() {
 
 void sendBearingSignal(int ms) {
   long start = millis();
-  digitalWrite(PIN_MORSE, HIGH);
+  digitalWrite(PIN_MORSE, LOW);
 
   while ( (start+ms) >  millis() ) {
     smsHandler.readGps();
   }
 
-  digitalWrite(PIN_MORSE, LOW);
+  digitalWrite(PIN_MORSE, HIGH);
   delay( morse.getCharInterval() );
 }
 
