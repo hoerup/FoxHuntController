@@ -27,5 +27,17 @@ OFF
 Disable transmission
 
 I:
-Sets the transmission interval (5 and 10 are allowed). Eg. 
-I:5   to set 5 minute interval
+Sets the transmission interval (5 and 10 are allowed). Eg. `I:5`   to set 5 minute interval
+
+A:
+Sets the allowed transmission timeslot. A:<starttime>-<stoptime> Eg. `A:0800-2230` configures the fox to not transmit before 08:00 and not after 22:30. 
+Please not that allowed timeslot can not cross midnight.
+
+DIT:
+Sets the dit/dot length in milliseconds. Allowed interval is 20-140 (inclusive). 
+Eg. `DIT:120` sets the ditlength to 120 milliseconds
+
+FOX:
+Sets the fox number. 0-7 are arllowed (both inclusive).
+Eg. `FOX:4` sets the foxnumber to 4
+
