@@ -11,8 +11,6 @@
 #define PIN_MORSE 6 // 
 
 
-#define PIN_HW_ONOFF 9
-
 
 #define PIN_GSM_SHIELD_POWERCTRL 12 // This one cant be moved
 

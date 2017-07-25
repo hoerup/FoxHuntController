@@ -47,8 +47,6 @@ const char* const MorseMap[] =
 };
 
 
-int x = 0b0100;
-
 
 Morse::Morse(short pin) {  
   outpin = pin;
@@ -79,12 +77,9 @@ short Morse::getCharInterval() {
   return charInterval;
 }
 
-void Morse::setMessage(const char* msg) {
-  message = msg;
-}
 
 
-void Morse::sendMorse() {
+void Morse::sendMorse(const char* message) {
   int len = strlen(message);
   
   for (int i=0; i<len; i++)  {

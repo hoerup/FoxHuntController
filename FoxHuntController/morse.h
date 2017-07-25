@@ -7,11 +7,11 @@ class Morse {
   public:
     Morse(short pin);
     void setDitLength(int len);
-    void setMessage(const char* msg);
+//    void setMessage(const char* msg);
 
     void sendLongSignal(short ms);
 
-    void sendMorse();
+    void sendMorse(const char* message);
 
     short getDitLength();
     short getCharInterval();
@@ -28,10 +28,7 @@ class Morse {
     short ditlength;    
     short charInterval;
     short wordInterval;
-    
-    
-    const char* message;
-  
+      
 };
 
 

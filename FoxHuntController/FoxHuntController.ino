@@ -41,11 +41,6 @@ void setup() {
   debugSerial.println( F("FoxHunt booting") );
 
 
-  pinMode(PIN_HW_ONOFF, INPUT);
-
-
-
-
   
 
   EEPROM.get(0, globalConfiguration);
@@ -151,11 +146,9 @@ void morseController() {
 
   /////////////////////////////////////////
   //første sending af call
-  long startTime = millis();
-  morse.setMessage(call);    
-  morse.sendMorse();
-  morse.setMessage(mid);  
-  morse.sendMorse();  
+  long startTime = millis();    
+  morse.sendMorse(call);
+  morse.sendMorse(mid);  
   long stopTime = millis();
 
   long elapsed = stopTime-startTime;
@@ -176,20 +169,17 @@ void morseController() {
   sendBearingSignal(bearingLength);//Pejlestreg
 
   /////////////////////////////////////////
-  // midterste sending
-  morse.setMessage(mid);  
-  morse.sendMorse();
-  morse.sendMorse();  
+  // midterste sending  
+  morse.sendMorse(mid);
+  morse.sendMorse(mid);  
 
   
   sendBearingSignal(bearingLength);//Pejlestreg
 
   /////////////////////////////////////////
-  //sidste sending af call
-  morse.setMessage(call);    
-  morse.sendMorse();
-  morse.setMessage(mid);  
-  morse.sendMorse();
+  //sidste sending af call    
+  morse.sendMorse(call);  
+  morse.sendMorse(mid);
 
 
   debugSerial.println( F("Done sending morse") );
