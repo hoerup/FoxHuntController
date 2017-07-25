@@ -67,8 +67,8 @@ void Morse::setDitLength(int len) {
       
   ditlength = len;
 
-  charInterval = ditlength * 5;
-  wordInterval = ditlength * 7;
+  charInterval = ditlength * 3;
+  wordInterval = ditlength * 5;
 }
 
 short Morse::getDitLength() {

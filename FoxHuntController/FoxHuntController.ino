@@ -137,20 +137,29 @@ void morseController() {
   printTime(currentTime);
   
 
+  char mid[3];
   char call[10];
+
+  sprintf(mid, "%c%c%", globalVolatile.foxChar, globalVolatile.foxChar);  
   sprintf(call, "OZ17SJ%c", globalVolatile.foxChar);
-  morse.setMessage(call);  
+ 
   debugSerial.print( F("Sending morse, call=") );
   debugSerial.println(call);
+  debugSerial.print( F("start=") );
+  debugSerial.println(mid);
   
 
-
+  /////////////////////////////////////////
+  //første sending af call
   long startTime = millis();
-  morse.sendMorse();//første sending af call
+  morse.setMessage(call);    
+  morse.sendMorse();
+  morse.setMessage(mid);  
+  morse.sendMorse();  
   long stopTime = millis();
 
   long elapsed = stopTime-startTime;
-  int bearingLength = (50000L - (3*elapsed) ) / 4; // samlet udsendelse skal vare 50 ca sekunder - så for at finde længden af pejlestreg tages samlet tid og fratrækkes 3x kaldesignal. Den resterende mængde deles i 4 (4 pejlestreger)
+  int bearingLength = (50000L - (3*elapsed) ) / 2; // samlet udsendelse skal vare 50 ca sekunder - så for at finde længden af pejlestreg tages samlet tid og fratrækkes 3x kaldesignal. Den resterende mængde deles i 2 (2 pejlestreger)
 
 
   
@@ -163,14 +172,24 @@ void morseController() {
     bearingLength = 1000;
   }
   
+
+  sendBearingSignal(bearingLength);//Pejlestreg
+
+  /////////////////////////////////////////
+  // midterste sending
+  morse.setMessage(mid);  
+  morse.sendMorse();
+  morse.sendMorse();  
+
   
   sendBearingSignal(bearingLength);//Pejlestreg
-  sendBearingSignal(bearingLength);//Pejlestreg
-  morse.sendMorse(); //midterste sending af call
-  
-  sendBearingSignal(bearingLength);//Pejlestreg
-  sendBearingSignal(bearingLength);//Pejlestreg
-  morse.sendMorse(); //sidste sending af call
+
+  /////////////////////////////////////////
+  //sidste sending af call
+  morse.setMessage(call);    
+  morse.sendMorse();
+  morse.setMessage(mid);  
+  morse.sendMorse();
 
 
   debugSerial.println( F("Done sending morse") );
