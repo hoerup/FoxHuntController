@@ -12,7 +12,6 @@ The following SMS commands are supported (commands are case-insensitive)
 `STATUS`
 Returns a status message with: 
 * Fox: fox number/fox letter
-* Ho: hardware on/off switch - (currently unused)
 * So: SMS on/off
 * Dit: (it-length / dot-length
 * T: Local time in UTC
