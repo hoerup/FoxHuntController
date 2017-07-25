@@ -4,8 +4,8 @@ This project is for controlling a ham radio "fox" for a "fox-hunt".
 
 The fox will persist of an arduino uno + a DFrobot sim808 gsm/gps shield. The  shield is both for receiving a time signal and for remote control of the fox.
 
-##
-The signal that sends is build like this
+##Transmission
+The signal that is transmitted, is build like this:
 
 * Call signal
 * 2 extra fox ID characters
