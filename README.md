@@ -26,6 +26,9 @@ Enable transmission
 OFF
 Disable transmission
 
+PING
+Sends 3 bearing signals, each lasting 15 seconds
+
 I:
 Sets the transmission interval (5 and 10 are allowed). Eg. `I:5`   to set 5 minute interval
 

@@ -155,6 +155,13 @@ void SmsHandler::parseSms() {
       return;
     }
 
+    if (strcmp("PING", message) == 0) { // ping
+      globalVolatile.sendBearing = 1;
+      sim808.sendSMS(phone, "Ok");  
+      return;
+    }
+    
+
     // handling of start-stop time
     // format "A:0800-2300"
     if (strncmp("A:", message, 2) == 0) {
@@ -236,7 +243,6 @@ void SmsHandler::parseSms() {
       return;  
     }
 
-    
 
 
     sim808.sendSMS(phone, "Unknown Command");

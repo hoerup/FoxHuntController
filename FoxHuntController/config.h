@@ -34,6 +34,7 @@ struct FoxConfig {
 //contains data that should be globally available - but due to its dynamic properties shouldn't be saved to eeprom
 struct VolatileData {
   unsigned short onHw : 1;
+  unsigned short sendBearing : 1;
 
   unsigned char foxChar;
 

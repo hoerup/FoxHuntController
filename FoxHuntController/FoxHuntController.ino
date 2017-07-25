@@ -16,6 +16,8 @@
 #include "config.h"
 
 
+//const char* callsign = "OZ7FOX";
+//const char* callsign = "OZ17SJ";
 
 Morse morse(PIN_MORSE);
 
@@ -59,6 +61,7 @@ void setup() {
   
 
   globalVolatile.lastTimeUpdate = 0;
+  globalVolatile.sendBearing = 0;
 
   morse.setDitLength( globalConfiguration.ditLength );
 
@@ -87,6 +90,16 @@ void loop() {
 //ToDo: Denne funtion skal holde øje med tid + afsendelses interval
 //      og såfremt det er tid til afsendelse skal den finde den rigtige besked og af sende den 
 void morseController() {
+
+  if (globalVolatile.sendBearing == 1) {
+    globalVolatile.sendBearing = 0;
+
+    sendBearingSignal(15000);
+    sendBearingSignal(15000);
+    sendBearingSignal(15000);
+
+    return;
+  }
   
   if (globalVolatile.onHw == 0 || globalConfiguration.onSms == 0)  { //this fox has been shut off by switch or sms
     return;
@@ -125,7 +138,7 @@ void morseController() {
   
 
   char call[10];
-  sprintf(call, "OZ7FOX%c", globalVolatile.foxChar);
+  sprintf(call, "OZ17SJ%c", globalVolatile.foxChar);
   morse.setMessage(call);  
   debugSerial.print( F("Sending morse, call=") );
   debugSerial.println(call);
