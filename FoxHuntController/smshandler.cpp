@@ -50,10 +50,10 @@ void SmsHandler::init() {
   else 
       debugSerial.println( F("Open the GPS power failure") );
 
-  /*debugSerial.println("Deleting old sms");
-  for (int i=1; i<=9; i++) {
+  debugSerial.println("Deleting old sms");
+  for (short i=1; i<=9; i++) {
     sim808.deleteSMS(i);  
-  }*/
+  }
 
   digitalWrite(PIN_GSM_READY, HIGH);
 
