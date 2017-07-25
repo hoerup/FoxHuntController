@@ -20,14 +20,7 @@ The signal that is transmitted, is build like this:
 The following SMS commands are supported (commands are case-insensitive)
 
 `STATUS`
-Returns a status message with: 
-* Fox: fox number/fox letter
-* So: SMS on/off
-* Dit: (it-length / dot-length
-* T: Local time in UTC
-* Loc: location latitude,longitude
-* Int:  transmission interval in minutes (5/10)
-* Period: period the fox is allowed to transmit (eg 0800-2200)
+Returns a status message
 
 `ON`
 Enable transmission 
@@ -53,3 +46,12 @@ Eg. `DIT:120` sets the ditlength to 120 milliseconds
 Sets the fox number. 0-7 are arllowed (both inclusive).
 Eg. `FOX:4` sets the foxnumber to 4
 
+## Status message
+The `status` message contains these elements:
+* Fox: fox number/fox letter
+* So: SMS on/off
+* Dit: (it-length / dot-length
+* T: Local time in UTC
+* Loc: location latitude,longitude
+* Int:  transmission interval in minutes (5/10)
+* Period: period the fox is allowed to transmit (eg 0800-2200)
