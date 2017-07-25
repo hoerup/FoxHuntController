@@ -36,7 +36,7 @@ Sets the transmission interval (5 and 10 are allowed). Eg. `I:5`   to set 5 minu
 
 `A:`
 Sets the allowed transmission timeslot. A:<starttime>-<stoptime> Eg. `A:0800-2230` configures the fox to not transmit before 08:00 and not after 22:30. 
-Please not that allowed timeslot can not cross midnight.
+Allowed timeslot can not cross midnight. **Please note that all times are in UTC**.
 
 `DIT:`
 Sets the dit/dot length in milliseconds. Allowed interval is 20-140 (inclusive). 
