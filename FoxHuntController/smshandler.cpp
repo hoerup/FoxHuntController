@@ -166,14 +166,14 @@ void SmsHandler::parseSms() {
     // format "A:0800-2300"
     if (strncmp("A:", message, 2) == 0) {
       if (strlen(message) != 11) {
-        sim808.sendSMS(phone, "Error, invalid length" );    
+        sim808.sendSMS(phone, F("Error, invalid length") );    
         return ;
       }
       strncpy(tmpstr, message+2, 4);
       tmpstr[4] = 0;
       unsigned short tmpStart = atoi(tmpstr);
       if (tmpStart == 0) {
-        sim808.sendSMS(phone, "Error parsing start");    
+        sim808.sendSMS(phone, F("Error parsing start") );    
         return ;        
       }
 
@@ -181,7 +181,7 @@ void SmsHandler::parseSms() {
       tmpstr[4] = 0;
       unsigned short tmpStop = atoi(tmpstr);
       if (tmpStop == 0) {
-        sim808.sendSMS(phone, "Error parsing stop");    
+        sim808.sendSMS(phone, F("Error parsing stop") );    
         return ;        
       }
 
@@ -200,7 +200,7 @@ void SmsHandler::parseSms() {
       unsigned short tmpInterval = atoi(tmpstr);
 
       if (tmpInterval != 5 && tmpInterval != 10) {
-        sim808.sendSMS(phone, "Error, invalid interval (5/10)");    
+        sim808.sendSMS(phone, F("Error, invalid interval (5/10)") );    
         return ;  
       }
       globalConfiguration.transmitInterval = tmpInterval;
@@ -216,7 +216,7 @@ void SmsHandler::parseSms() {
       unsigned short tmpDit = atoi(tmpstr);
 
       if (tmpDit < 20 || tmpDit > 140) {
-        sim808.sendSMS(phone, "Error, dit must be be between 20 and 140 (inclusive)");    
+        sim808.sendSMS(phone, F("Error, dit must be be between 20 and 140 (inclusive)") );    
         return ;  
       }
       globalConfiguration.ditLength = tmpDit;
@@ -233,7 +233,7 @@ void SmsHandler::parseSms() {
       unsigned short tmpFox = atoi(tmpstr);
 
       if (tmpFox > 7) {
-        sim808.sendSMS(phone, "Error: Fox must be between 0 and 7 (inclusive)");    
+        sim808.sendSMS(phone, F("Error: Fox must be between 0 and 7 (inclusive)") );    
         return ;  
       }
       globalConfiguration.foxNumber = tmpFox;
@@ -245,7 +245,7 @@ void SmsHandler::parseSms() {
 
 
 
-    sim808.sendSMS(phone, "Unknown Command");
+    sim808.sendSMS(phone, F("Unknown Command"));
 }
 
 void SmsHandler::sendStatusReply() {
