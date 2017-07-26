@@ -141,19 +141,38 @@ void SmsHandler::parseSms() {
       return;
     }
 
-    if (strcmp("ON", message) == 0) {
-      globalConfiguration.onSms = 1;
+    if (strcmp("ENABLETX", message) == 0) {
+      globalConfiguration.enableTx = 1;
       EEPROM.put(0, globalConfiguration);
       sim808.sendSMS(phone, "Ok");  
       return;
     }
 
-    if (strcmp("OFF", message) == 0) {
-      globalConfiguration.onSms = 0;
+    if (strcmp("DISABLETX", message) == 0) {
+      globalConfiguration.enableTx = 0;
       EEPROM.put(0, globalConfiguration);
       sim808.sendSMS(phone, "Ok");  
       return;
     }
+
+    if (strcmp("ENSCHED", message) == 0) {
+      globalConfiguration.enableSched = 1;
+      EEPROM.put(0, globalConfiguration);
+      sim808.sendSMS(phone, "Ok");  
+      return;
+    }
+
+    if (strcmp("DISCHED", message) == 0) {
+      globalConfiguration.enableSched = 0;
+      EEPROM.put(0, globalConfiguration);
+      sim808.sendSMS(phone, "Ok");  
+      return;
+    }
+
+
+
+
+    
 
     if (strcmp("PING", message) == 0) { // ping
       globalVolatile.sendBearing = 1;
@@ -256,9 +275,10 @@ void SmsHandler::sendStatusReply() {
   dtostrf(sim808.GPSdata.lat, 2, 6, lat); //since sprintf doesn't support %f
   dtostrf(sim808.GPSdata.lon, 2, 6, lon);
 
-  sprintf(reply, "Fox:%i/%c So:%i Dit:%d T:%02d:%02d:%02d(utc) Loc:%s,%s Int:%d Period:%04d-%04d", 
+  sprintf(reply, "Fox:%i/%c TX:%i SchEnable:%d Dit:%d T:%02d:%02d:%02d(utc) Loc:%s,%s Int:%d Period:%04d-%04d", 
       globalConfiguration.foxNumber, globalVolatile.foxChar,      
-      globalConfiguration.onSms,
+      globalConfiguration.enableTx,
+      globalConfiguration.enableSched,
       globalConfiguration.ditLength,
       sim808.GPSdata.hour, sim808.GPSdata.minute, sim808.GPSdata.second,
       lat,lon,

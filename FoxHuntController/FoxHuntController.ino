@@ -67,11 +67,6 @@ void setup() {
 
 void loop() {
 
-  // Vi kan godt aflæse ditital inputs hver loop cycle - det  tager ikke mange ms.
-  //globalVolatile.foxNumber = ( digitalRead(PIN_FOXNO_2) << 2) &  ( digitalRead(PIN_FOXNO_1) << 1) &  digitalRead(PIN_FOXNO_0);
-  //globalVolatile.onHw = digitalRead(PIN_HW_ONOFF);
-  globalVolatile.onHw = 1; //Always on - for now
-
   globalVolatile.foxChar = senderId[ globalConfiguration.foxNumber ];
 
 
@@ -96,7 +91,7 @@ void morseController() {
     return;
   }
   
-  if (globalVolatile.onHw == 0 || globalConfiguration.onSms == 0)  { //this fox has been shut off by switch or sms
+  if (globalConfiguration.enableTx == 0)  { //this fox has been shut off by sms
     return;
   }
 

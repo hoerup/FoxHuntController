@@ -16,7 +16,8 @@
 
 // contains configuration data that should be saved
 struct FoxConfig {
-  unsigned short onSms : 1;
+  unsigned short enableTx : 1;
+  unsigned short enableSched : 1;
 
   unsigned short startTime;
   unsigned short stopTime;
@@ -31,7 +32,6 @@ struct FoxConfig {
 
 //contains data that should be globally available - but due to its dynamic properties shouldn't be saved to eeprom
 struct VolatileData {
-  unsigned short onHw : 1;
   unsigned short sendBearing : 1;
 
   unsigned char foxChar;
