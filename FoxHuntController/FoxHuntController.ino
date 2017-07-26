@@ -108,10 +108,12 @@ void morseController() {
     return;
   }
 
-  //don't transmit if we are outside allowed transmit timeslot
-  short tmpCurrentTime = (currentTime.hour * 100) + currentTime.minute;
-  if (tmpCurrentTime < globalConfiguration.startTime || tmpCurrentTime > globalConfiguration.stopTime) {
-    return;
+  if (globalConfiguration.enableSched == 1) {
+    //don't transmit if we are outside allowed transmit timeslot
+    short tmpCurrentTime = (currentTime.hour * 100) + currentTime.minute;
+    if (tmpCurrentTime < globalConfiguration.startTime || tmpCurrentTime > globalConfiguration.stopTime) {
+      return;
+    }
   }
 
   // there must go a whole minute between transmissions

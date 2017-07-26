@@ -268,14 +268,15 @@ void SmsHandler::parseSms() {
 }
 
 void SmsHandler::sendStatusReply() {
-  char reply[120] ;
+  const short REPLY_LEN = 120;
+  char reply[REPLY_LEN] ;
   
   char lat[10];
   char lon[10];  
   dtostrf(sim808.GPSdata.lat, 2, 6, lat); //since sprintf doesn't support %f
   dtostrf(sim808.GPSdata.lon, 2, 6, lon);
 
-  sprintf(reply, "Fox:%i/%c TX:%i SchEnable:%d Dit:%d T:%02d:%02d:%02d(utc) Loc:%s,%s Int:%d Period:%04d-%04d", 
+  snprintf(reply, REPLY_LEN, "Fox:%i/%c TX:%i SchEnable:%d Dit:%d T:%02d:%02d:%02d(utc) Loc:%s,%s Int:%d Period:%04d-%04d", 
       globalConfiguration.foxNumber, globalVolatile.foxChar,      
       globalConfiguration.enableTx,
       globalConfiguration.enableSched,
